@@ -1,0 +1,8 @@
+<!-- ko if: visible -->
+<div class="account_list" data-bind="foreach: accounts">
+	<div class="account_item" data-bind="css: {'current_account': isCurrent}, click: changeAccount">
+		<span data-bind="text: email"></span>
+		<span style="float: right;" data-bind="text: unseenMessagesCount, visible: unseenMessagesCount() > 0"></span>
+	</div>
+</div>
+<!-- /ko -->
