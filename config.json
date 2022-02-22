@@ -3,6 +3,10 @@
 		false,
 		"bool"
 	],
+	"NumberOfAccountsToDisplay": [
+		3,
+		"int"
+	],
 	"AvailableFor": [
 		["MailWebclient"],
 		"array"

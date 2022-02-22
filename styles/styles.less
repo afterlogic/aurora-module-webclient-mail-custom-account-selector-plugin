@@ -31,5 +31,29 @@
 			margin-right: 4px;
 			margin-top: -6px;
 		}
+
+		.account_unseen {
+			float: right;
+		}
+	}
+
+	.link_more_accounts {
+		font-size: 8pt;
+		font-weight: 200;
+		float: left;
+		margin: 0px 16px 10px;
+	}
+
+	.last_accounts_collapsed {
+		opacity: 0;
+		max-height: 0 !important;
+		visibility: hidden;
+		.transition(~"max-height 0.5s ease 0s, opacity 0.5s ease 0.2s, visibility 0.1s linear 0s");
+	}
+
+	.last_accounts_expanded {
+		opacity: 1;
+		visibility: visible;
+		.transition(~"max-height 0.5s ease 0s, opacity 0.5s ease 0.2s, visibility 0s linear 0s");
 	}
 }

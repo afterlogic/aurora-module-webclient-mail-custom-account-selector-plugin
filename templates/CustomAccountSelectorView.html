@@ -1,8 +1,28 @@
 <!-- ko if: visible -->
-<div class="account_list" data-bind="foreach: accounts">
-	<div class="account_item" data-bind="css: {'current_account': isCurrent}, click: changeAccount">
-		<span data-bind="text: email"></span>
-		<span style="float: right;" data-bind="text: unseenMessagesCount, visible: unseenMessagesCount() > 0"></span>
-	</div>
+<div class="account_list" data-bind="css: {'account_list_divided': lastAccounts().length > 0}">
+	<!-- ko foreach: firstAccounts -->
+		<div class="account_item" data-bind="css: {'current_account': isCurrent}, click: changeAccount">
+			<span data-bind="text: email"></span>
+			<span class="account_unseen" data-bind="text: unseenMessagesCount, visible: unseenMessagesCount() > 0"></span>
+		</div>
+	<!-- /ko -->
+	<!-- ko if: lastAccounts().length > 0 -->
+		<div data-bind="initDom: lastAccountsDom, style: {'max-height': lastAccountsMaxHeight() + 'px'},
+			 css: {'last_accounts_expanded': showLastAccounts, 'last_accounts_collapsed': !showLastAccounts()}"
+		>
+			<div>
+			<!-- ko foreach: lastAccounts -->
+				<div class="account_item" data-bind="css: {'current_account': isCurrent}, click: changeAccount">
+					<span data-bind="text: email"></span>
+					<span class="account_unseen" data-bind="text: unseenMessagesCount, visible: unseenMessagesCount() > 0"></span>
+				</div>
+			<!-- /ko -->
+			</div>
+		</div>
+		<a class="link link_more_accounts" href="javascript: void(0);" data-bind="visible: !showLastAccounts(),
+		   i18n: {'key': '%MODULENAME%/ACTION_MORE_ACCOUNTS'}, click: triggerShowLastAccounts"></a>
+		<a class="link link_more_accounts" href="javascript: void(0);" data-bind="visible: showLastAccounts,
+		   i18n: {'key': '%MODULENAME%/ACTION_LESS_ACCOUNTS'}, click: triggerShowLastAccounts"></a>
+	<!-- /ko -->
 </div>
 <!-- /ko -->

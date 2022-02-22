@@ -21,7 +21,20 @@ class Module extends \Aurora\System\Module\AbstractModule
 	}
 
 	/**
-	 * Obtains list of module settings for super admin.
+	 * Obtains list of module settings.
+	 * @return array
+	 */
+	public function GetSettings()
+	{
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
+
+		return [
+			'NumberOfAccountsToDisplay' => $this->getConfig('NumberOfAccountsToDisplay', 3)
+		];
+	}
+
+	/**
+	 * Obtains relevant folders information for several accounts
 	 * @return array
 	 */
 	public function GetAccountsRelevantFoldersInformation($AccountsData)

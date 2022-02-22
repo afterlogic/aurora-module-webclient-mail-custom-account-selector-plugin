@@ -2,6 +2,7 @@
 
 const
 	_ = require('underscore'),
+	$ = require('jquery'),
 	ko = require('knockout'),
 
 	ModulesManager = require('%PathToCoreWebclientModule%/js/ModulesManager.js'),
@@ -27,11 +28,43 @@ function CCustomAccountSelectorView(allInboxesUnseenCounts)
 		}
 		return [];
 	}, this);
+
 	this.visible = ko.computed(function () {
-		return Settings.accountsAboveFolders() && this.accounts().length > 0;
+		return this.accounts().length > 0;
+	}, this);
+
+	this.hideLastAccounts = ko.computed(function () {
+		return Settings.NumberOfAccountsToDisplay > 0
+			   && Settings.NumberOfAccountsToDisplay < (this.accounts().length - 1);
+	}, this);
+	this.firstAccounts = ko.computed(function () {
+		if (this.hideLastAccounts()) {
+			return this.accounts().slice(0, Settings.NumberOfAccountsToDisplay);
+		} else {
+			return this.accounts();
+		}
+	}, this);
+	this.lastAccounts = ko.computed(function () {
+		if (this.hideLastAccounts()) {
+			return this.accounts().slice(Settings.NumberOfAccountsToDisplay);
+		} else {
+			return [];
+		}
+	}, this);
+	this.showLastAccounts = ko.observable(false);
+	this.lastAccountsMaxHeight = ko.observable(0);
+	this.lastAccountsDom = ko.observable(null);
+	this.lastAccountsDom.subscribe(function () {
+		setTimeout(function () {
+			this.lastAccountsMaxHeight(this.lastAccountsDom().children().first().outerHeight());
+		}.bind(this));
 	}, this);
 }
 
 CCustomAccountSelectorView.prototype.ViewTemplate = '%ModuleName%_CustomAccountSelectorView';
+
+CCustomAccountSelectorView.prototype.triggerShowLastAccounts = function () {
+	this.showLastAccounts(!this.showLastAccounts());
+};
 
 module.exports = CCustomAccountSelectorView;

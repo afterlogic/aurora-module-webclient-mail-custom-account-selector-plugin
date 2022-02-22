@@ -56,6 +56,9 @@ module.exports = function (appData) {
 	const App = require('%PathToCoreWebclientModule%/js/App.js');
 
 	if (App.isUserNormalOrTenant()) {
+		const Settings = require('modules/%ModuleName%/js/Settings.js');
+		Settings.init(appData);
+
 		App.subscribeEvent('MailWebclient::GetHeaderItemView', function (params) {
 			params.HeaderItemView = require('modules/%ModuleName%/js/views/HeaderItemView.js');
 		});
