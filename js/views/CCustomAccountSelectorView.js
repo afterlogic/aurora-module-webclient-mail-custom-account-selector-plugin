@@ -54,16 +54,22 @@ function CCustomAccountSelectorView(allInboxesUnseenCounts)
 	this.showLastAccounts = ko.observable(false);
 	this.lastAccountsMaxHeight = ko.observable(0);
 	this.lastAccountsDom = ko.observable(null);
-	this.lastAccountsDom.subscribe(function () {
-		setTimeout(function () {
-			this.lastAccountsMaxHeight(this.lastAccountsDom().children().first().outerHeight());
-		}.bind(this));
-	}, this);
 }
 
 CCustomAccountSelectorView.prototype.ViewTemplate = '%ModuleName%_CustomAccountSelectorView';
 
+CCustomAccountSelectorView.prototype.setLastAccountsMaxHeight = function () {
+	if (this.lastAccountsDom()) {
+		this.lastAccountsMaxHeight(this.lastAccountsDom().children().first().outerHeight());
+	}
+};
+
+CCustomAccountSelectorView.prototype.onShow = function () {
+	this.setLastAccountsMaxHeight();
+};
+
 CCustomAccountSelectorView.prototype.triggerShowLastAccounts = function () {
+	this.setLastAccountsMaxHeight();
 	this.showLastAccounts(!this.showLastAccounts());
 };
 
