@@ -20,6 +20,7 @@ function CCustomAccountSelectorView(allInboxesUnseenCounts)
 			return _.map(AccountList.collection(), (account) => {
 				return {
 					isCurrent: account.isCurrent,
+					id: account.id,
 					email: account.email,
 					changeAccount: account.changeAccount.bind(account),
 					unseenMessagesCount: ko.computed(() => allInboxesUnseenCounts()[account.id()] || 0)
@@ -28,6 +29,15 @@ function CCustomAccountSelectorView(allInboxesUnseenCounts)
 		}
 		return [];
 	}, this);
+
+	if (AccountList) {
+		AccountList.currentId.subscribe(function () {
+			const isCurrentInLastPart = !!this.lastAccounts().find(account => account.id() === AccountList.currentId());
+			if (isCurrentInLastPart) {
+				this.showLastAccounts(true);
+			}
+		}, this);
+	}
 
 	this.visible = ko.computed(function () {
 		return this.accounts().length > 0;
