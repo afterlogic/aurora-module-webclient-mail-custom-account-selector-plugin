@@ -1,28 +1,50 @@
 <!-- ko if: visible -->
-<div class="account_list" data-bind="css: {'account_list_divided': lastAccounts().length > 0}">
-	<!-- ko foreach: firstAccounts -->
+<div class="account_list" data-bind="css: {'account_list_divided': accountListDivided}">
+	<div data-bind="visible: !editMode()">
+		<!-- ko foreach: firstAccounts -->
 		<div class="account_item" data-bind="css: {'current_account': isCurrent}, click: changeAccount">
-			<span data-bind="text: email"></span>
+			<span data-bind="text: mailboxName"></span>
 			<span class="account_unseen" data-bind="text: unseenMessagesCount, visible: unseenMessagesCount() > 0"></span>
 		</div>
-	<!-- /ko -->
-	<!-- ko if: lastAccounts().length > 0 -->
+		<!-- /ko -->
+		<!-- ko if: accountListDivided -->
 		<div data-bind="initDom: lastAccountsDom, style: {'max-height': lastAccountsMaxHeight() + 'px'},
-			 css: {'last_accounts_expanded': showLastAccounts, 'last_accounts_collapsed': !showLastAccounts()}"
+			 css: {'last_accounts_expanded': visibleLastAccounts, 'last_accounts_collapsed': !visibleLastAccounts()}"
 		>
 			<div>
-			<!-- ko foreach: lastAccounts -->
+				<!-- ko foreach: lastAccounts -->
 				<div class="account_item" data-bind="css: {'current_account': isCurrent}, click: changeAccount">
-					<span data-bind="text: email"></span>
+					<span data-bind="text: mailboxName"></span>
 					<span class="account_unseen" data-bind="text: unseenMessagesCount, visible: unseenMessagesCount() > 0"></span>
 				</div>
-			<!-- /ko -->
+				<!-- /ko -->
 			</div>
 		</div>
-		<a class="link link_more_accounts" href="javascript: void(0);" data-bind="visible: !showLastAccounts(),
-		   i18n: {'key': '%MODULENAME%/ACTION_MORE_ACCOUNTS'}, click: triggerShowLastAccounts"></a>
-		<a class="link link_more_accounts" href="javascript: void(0);" data-bind="visible: showLastAccounts,
-		   i18n: {'key': '%MODULENAME%/ACTION_LESS_ACCOUNTS'}, click: triggerShowLastAccounts"></a>
-	<!-- /ko -->
+		<!-- /ko -->
+		<a class="link link_accounts_actions_left" href="javascript: void(0);"
+		   data-bind="visible: accountListDivided() && !showLastAccounts(),
+		   i18n: {'key': '%MODULENAME%/ACTION_MORE_ACCOUNTS'}, click: triggerShowLastAccounts"
+		></a>
+		<a class="link link_accounts_actions_left" href="javascript: void(0);"
+		   data-bind="visible: accountListDivided() && showLastAccounts(),
+		   i18n: {'key': '%MODULENAME%/ACTION_LESS_ACCOUNTS'}, click: triggerShowLastAccounts"
+		></a>
+		<span class="icon_manage_accounts" data-bind="click: switchToEditMode"></span>
+	</div>
+
+	<div class="account_list_edit_mode" data-bind="visible: editMode">
+		<!-- ko foreach: firstAccounts().concat(lastAccounts()) -->
+		<div class="account_item" data-bind="css: {'current_account': isCurrent}">
+			<input type="text" class="input_mailbox_name" data-bind="value: mailboxName" />
+			<span class="icon_move_up" data-bind="click: function () { $parent.moveUpAccount(id()); }"></span>
+		</div>
+		<!-- /ko -->
+		<a class="link link_accounts_actions_right" href="javascript: void(0);"
+		   data-bind="i18n: {'key': 'COREWEBCLIENT/ACTION_CANCEL'}, click: cancelEditMode"
+		></a>
+		<a class="link link_accounts_actions_right" href="javascript: void(0);"
+		   data-bind="i18n: {'key': 'COREWEBCLIENT/ACTION_SAVE'}, click: saveChanges"
+		></a>
+	</div>
 </div>
 <!-- /ko -->

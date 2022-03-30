@@ -62,6 +62,10 @@ module.exports = function (appData) {
 		App.subscribeEvent('MailWebclient::GetHeaderItemView', function (params) {
 			params.HeaderItemView = require('modules/%ModuleName%/js/views/HeaderItemView.js');
 		});
+		App.subscribeEvent('MailWebclient::ParseAccount::after', function ({ account, data }) {
+			account.mailboxName = ko.observable(Types.pString(data['%ModuleName%::MailboxName']), account.email());
+			account.mailboxPosition = ko.observable(Types.pInt(data['%ModuleName%::MailboxPosition']));
+		});
 		return {
 			start: (ModulesManager) => {
 				if (ModulesManager.isModuleIncluded('MailWebclient')) {
