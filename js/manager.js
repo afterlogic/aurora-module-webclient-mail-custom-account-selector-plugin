@@ -56,9 +56,19 @@ module.exports = function (appData) {
 	const App = require('%PathToCoreWebclientModule%/js/App.js');
 
 	if (App.isUserNormalOrTenant()) {
+		const Settings = require('modules/%ModuleName%/js/Settings.js');
+		Settings.init(appData);
+
 		App.subscribeEvent('MailWebclient::GetHeaderItemView', function (params) {
 			params.HeaderItemView = require('modules/%ModuleName%/js/views/HeaderItemView.js');
 		});
+
+		let position = 0;
+		App.subscribeEvent('MailWebclient::ParseAccount::after', function ({ account, data }) {
+			account.mailboxName = ko.observable(Types.pString(data['%ModuleName%::MailboxName'], account.email()));
+			account.mailboxPosition = ko.observable(Types.pInt(data['%ModuleName%::MailboxPosition'], position++));
+		});
+
 		return {
 			start: (ModulesManager) => {
 				if (ModulesManager.isModuleIncluded('MailWebclient')) {

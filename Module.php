@@ -21,14 +21,27 @@ class Module extends \Aurora\System\Module\AbstractModule
 	}
 
 	/**
-	 * Obtains list of module settings for super admin.
+	 * Obtains list of module settings.
+	 * @return array
+	 */
+	public function GetSettings()
+	{
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
+
+		return [
+			'NumberOfAccountsToDisplay' => $this->getConfig('NumberOfAccountsToDisplay', 3)
+		];
+	}
+
+	/**
+	 * Obtains relevant folders information for several accounts
 	 * @return array
 	 */
 	public function GetAccountsRelevantFoldersInformation($AccountsData)
 	{
 		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
 
-		$aAccountsData = [];
+		$aResultAccountsData = [];
 		foreach ($AccountsData as $aAccountData)
 		{
 			$iAccountId = $aAccountData['AccountID'];
@@ -38,9 +51,35 @@ class Module extends \Aurora\System\Module\AbstractModule
 				\Aurora\Modules\Mail\Module::checkAccess($oAccount);
 				$aCounts = \Aurora\Modules\Mail\Module::Decorator()->GetRelevantFoldersInformation($iAccountId, $aAccountData['Folders'], $aAccountData['UseListStatusIfPossible']);
 				$aCounts['AccountId'] = $iAccountId;
-				$aAccountsData[] = $aCounts;
+				$aResultAccountsData[] = $aCounts;
 			}
 		}
-		return ['Accounts' => $aAccountsData];
+		return ['Accounts' => $aResultAccountsData];
+	}
+	
+	public function SaveAccountsData($AccountsData)
+	{
+		\Aurora\System\Api::checkUserRoleIsAtLeast(\Aurora\System\Enums\UserRole::NormalUser);
+
+		foreach ($AccountsData as $aAccountData)
+		{
+			$iAccountId = $aAccountData['AccountID'];
+			$oAccount = \Aurora\Modules\Mail\Module::Decorator()->GetAccount($iAccountId);
+			if ($oAccount instanceof \Aurora\Modules\Mail\Models\MailAccount)
+			{
+				\Aurora\Modules\Mail\Module::checkAccess($oAccount);
+				if (isset($aAccountData['MailboxName']))
+				{
+					$oAccount->{self::GetName() . '::MailboxName'} = $aAccountData['MailboxName'];
+				}
+				if (isset($aAccountData['MailboxPosition']))
+				{
+					$oAccount->{self::GetName() . '::MailboxPosition'} = $aAccountData['MailboxPosition'];
+				}
+				$oAccount->save();
+			}
+		}
+
+		return true;
 	}
 }

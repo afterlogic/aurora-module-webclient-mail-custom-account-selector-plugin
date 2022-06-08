@@ -31,5 +31,77 @@
 			margin-right: 4px;
 			margin-top: -6px;
 		}
+
+		.account_unseen {
+			float: right;
+		}
+	}
+
+	.account_list_edit_mode .account_item {
+		margin: 2px 6px;
+		padding: 2px 10px;
+	}
+
+	.link_accounts_actions_left,
+	.link_accounts_actions_right {
+		font-size: 8pt;
+		font-weight: 200;
+	}
+
+	.link_accounts_actions_left {
+		float: left;
+		margin: 3px 0px 10px 16px;
+	}
+
+	.link_accounts_actions_right {
+		float: right;
+		margin: 3px 16px 10px 0px;
+	}
+
+	.icon_manage_accounts {
+		color: white;
+		cursor: pointer;
+		float: right;
+		font-size: 20px;
+		line-height: 16px;
+		margin: 0px 15px 0;
+
+		.init-icon-font(after);
+
+		&:after {
+			content: "\e639";
+		}
+	}
+
+	.input_mailbox_name {
+		width: calc(100% - 59px);
+		border-radius: 9px;
+		padding: 3px 5px;
+		background-color: inherit;
+		box-shadow: none;
+		color: white;
+		border: 1px solid #dedede;
+	}
+
+	.icon_move_up {
+		background-image: url("../../images/modules/MailCustomAccountSelectorWebclientPlugin/custom-account-arrow-up.svg");
+		background-size: 14px;
+		display: inline-block;
+		height: 14px;
+		vertical-align: middle;
+		width: 14px;
+	}
+
+	.last_accounts_collapsed {
+		opacity: 0;
+		max-height: 0 !important;
+		visibility: hidden;
+		.transition(~"max-height 0.5s ease 0s, opacity 0.5s ease 0.2s, visibility 0.1s linear 0s");
+	}
+
+	.last_accounts_expanded {
+		opacity: 1;
+		visibility: visible;
+		.transition(~"max-height 0.5s ease 0s, opacity 0.5s ease 0.2s, visibility 0s linear 0s");
 	}
 }

@@ -7,6 +7,14 @@
     "",
     "string"
   ],
+  "NumberOfAccountsToDisplay": [
+    3,
+    "int"
+  ],
+  "NumberOfAccountsToDisplay_Description": [
+    "",
+    "string"
+  ],
   "AvailableFor": [
     [
       "MailWebclient"
