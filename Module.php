@@ -91,10 +91,10 @@ class Module extends \Aurora\System\Module\AbstractModule
             if ($oAccount instanceof \Aurora\Modules\Mail\Models\MailAccount) {
                 \Aurora\Modules\Mail\Module::checkAccess($oAccount);
                 if (isset($aAccountData['MailboxName'])) {
-                    $oAccount->{self::GetName() . '::MailboxName'} = $aAccountData['MailboxName'];
+                    $oAccount->setExtendedProp(self::GetName() . '::MailboxName', $aAccountData['MailboxName']);
                 }
                 if (isset($aAccountData['MailboxPosition'])) {
-                    $oAccount->{self::GetName() . '::MailboxPosition'} = $aAccountData['MailboxPosition'];
+                    $oAccount->setExtendedProp(self::GetName() . '::MailboxPosition', $aAccountData['MailboxPosition']);
                 }
                 $oAccount->save();
             }
