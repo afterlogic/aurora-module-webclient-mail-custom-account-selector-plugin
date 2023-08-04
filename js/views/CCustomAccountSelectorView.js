@@ -2,7 +2,6 @@
 
 const
 	_ = require('underscore'),
-	$ = require('jquery'),
 	ko = require('knockout'),
 
 	Ajax = require('%PathToCoreWebclientModule%/js/Ajax.js'),
