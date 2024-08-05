@@ -70,7 +70,7 @@ class Module extends \Aurora\System\Module\AbstractModule
             $iAccountId = $aAccountData['AccountID'];
             $oAccount = \Aurora\Modules\Mail\Module::Decorator()->GetAccount($iAccountId);
             if ($oAccount instanceof \Aurora\Modules\Mail\Models\MailAccount) {
-                \Aurora\Modules\Mail\Module::checkAccess($oAccount);
+                \Aurora\Modules\Mail\Module::checkAccountAccess($oAccount);
                 $aCounts = \Aurora\Modules\Mail\Module::Decorator()->GetRelevantFoldersInformation($iAccountId, $aAccountData['Folders'], $aAccountData['UseListStatusIfPossible']);
                 $aCounts['AccountId'] = $iAccountId;
                 $aResultAccountsData[] = $aCounts;
@@ -87,7 +87,7 @@ class Module extends \Aurora\System\Module\AbstractModule
             $iAccountId = $aAccountData['AccountID'];
             $oAccount = \Aurora\Modules\Mail\Module::Decorator()->GetAccount($iAccountId);
             if ($oAccount instanceof \Aurora\Modules\Mail\Models\MailAccount) {
-                \Aurora\Modules\Mail\Module::checkAccess($oAccount);
+                \Aurora\Modules\Mail\Module::checkAccountAccess($oAccount);
                 if (isset($aAccountData['MailboxName'])) {
                     $oAccount->setExtendedProp(self::GetName() . '::MailboxName', $aAccountData['MailboxName']);
                 }
